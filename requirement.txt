@@ -1,0 +1,9 @@
+httpx   
+fastapi 
+unicorn
+typer
+rich
+python-dotenv
+pydantic
+pytest
+pytest-asyncio 
