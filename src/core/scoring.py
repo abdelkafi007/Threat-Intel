@@ -1,5 +1,3 @@
-# You will need to import your clients here!
-# (e.g., from src.clients.virustotal import check_ip as vt_check)
 from src.clients.virustotal import check_ip as vt_check_ip
 from src.clients.virustotal import check_domain as vt_check_domain
 from src.clients.virustotal import check_hash as vt_check_hash
@@ -23,25 +21,10 @@ async def analyze_ioc(ioc: str):
     vt_malicious_count = vt_report
     abuse_score = abuse_report
     
-    # 3. Apply the Roadmap Rules!
     if vt_malicious_count >= 3 or abuse_score > 75:
-        return "🚨 MALICIOUS"
+        return {"verdict": "MALICIOUS", "vt_score": vt_malicious_count, "abuse_score": abuse_score}
     elif vt_malicious_count > 0 or abuse_score > 0:
-        return "⚠️ SUSPICIOUS"
+        return {"verdict": "SUSPICIOUS", "vt_score": vt_malicious_count, "abuse_score": abuse_score}
     else:
-        return "✅ HARMLESS"
+        return {"verdict": "HARMLESS", "vt_score": vt_malicious_count, "abuse_score": abuse_score}
 
-if __name__ == "__main__":
-    import asyncio
-
-    sample = [
-        "185.220.101.5",                     
-        "google.com",                        
-        "44d88612fea8a8f36de82e1278abb02f",  
-        "invalid_random_text"                
-
-
-    ]
-    for sample in sample:
-
-        print(f"{sample} --> {asyncio.run(analyze_ioc(sample))}")
